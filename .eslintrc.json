@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "airbnb",
+    "plugin:jest/recommended",
+    "prettier",
+    "prettier"
+  ],
+  "rules": {
+    "eqeqeq": "off"
+  }
+}
