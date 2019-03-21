@@ -31,13 +31,13 @@ import { resulti } from "resulti"
 const { resulti } = require("resulti");
 
 const val = resulti("myVal");
-const err = resulti(null, Error("myError"));
+const err = resulti(undefined, Error("myError"));
 ```
 A common place could be in interloping with normal async functions (if you're writing a library with an async function and using `resulti` you should always resolve to a `resulti`)
 
 ```js
 async function example() {
-  const couldBeError = await doSomethingAsync.then(val => resulti(val)).catch(err => resulti(null, err));
+  const couldBeError = await doSomethingAsync.then(val => resulti(val)).catch(err => resulti(undefined, err));
   if (couldBeError.isOk()) {
     const val = couldBeError.unwrap(); // Unwarp value from resulti
     // Handle concrete val

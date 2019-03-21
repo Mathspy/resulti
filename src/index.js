@@ -1,11 +1,11 @@
 const Resulti = Symbol("resulti");
 
 export function resulti(T, E) {
-  const isOk = T != undefined
-  const isErr = E != undefined
+  const isOk = T !== undefined
+  const isErr = E !== undefined
 
   if (isOk && isErr) throw Error(`Invariant fail: Attempting to pass both a type and an error is invalid usage of resulti: resulti(${T}, ${E})`);
-  if (!isOk && !isErr) throw Error(`Invariant fail: resulti requires one of the two variants to be non-nully: resulti(${T}, ${E})`);
+  if (!isOk && !isErr) throw Error(`Invariant fail: resulti requires one of the two variants to be passed: resulti(${T}, ${E})`);
 
   return Object.freeze({
     isOk: () => isOk,
@@ -56,7 +56,7 @@ export function resulti(T, E) {
 const i = x => x;
 
 export const resultify = (promise, ok = i, err = i) => {
-  return promise.then(x => resulti(x).map(ok)).catch(x => resulti(null, x).mapErr(err));
+  return promise.then(x => resulti(x).map(ok)).catch(x => resulti(undefined, x).mapErr(err));
 };
 
 export function isResulti(res) {
