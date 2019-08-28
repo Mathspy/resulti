@@ -1,6 +1,6 @@
 {
   "name": "resulti",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "main": "dist/resulti.cjs.js",
   "module": "dist/resulti.esm.js",
   "description": "A Rustism meant to make error handling much less error prone and more mandatory",
