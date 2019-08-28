@@ -1,11 +1,3 @@
 {
-  "extends": [
-    "airbnb",
-    "plugin:jest/recommended",
-    "prettier",
-    "prettier"
-  ],
-  "rules": {
-    "eqeqeq": "off"
-  }
+  "extends": ["airbnb-base", "plugin:jest/recommended", "prettier"]
 }
