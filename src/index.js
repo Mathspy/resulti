@@ -1,11 +1,17 @@
 const Resulti = Symbol("resulti");
 
 export function resulti(T, E) {
-  const isOk = T !== undefined
-  const isErr = E !== undefined
+  const isOk = T !== undefined;
+  const isErr = E !== undefined;
 
-  if (isOk && isErr) throw Error(`Invariant fail: Attempting to pass both a type and an error is invalid usage of resulti: resulti(${T}, ${E})`);
-  if (!isOk && !isErr) throw Error(`Invariant fail: resulti requires one of the two variants to be passed: resulti(${T}, ${E})`);
+  if (isOk && isErr)
+    throw Error(
+      `Invariant fail: Attempting to pass both a type and an error is invalid usage of resulti: resulti(${T}, ${E})`
+    );
+  if (!isOk && !isErr)
+    throw Error(
+      `Invariant fail: resulti requires one of the two variants to be passed: resulti(${T}, ${E})`
+    );
 
   return Object.freeze({
     isOk: () => isOk,
@@ -18,14 +24,14 @@ export function resulti(T, E) {
       if (isOk) throw Error(T);
       return E;
     },
-    unwrapOr: (optb) => isErr ? optb : T,
-    unwrapOrElse: (op) => isErr ? op(E) : T,
-    expect: (err) => {
-      if (isErr) throw err;
+    unwrapOr: optb => (isErr ? optb : T),
+    unwrapOrElse: op => (isErr ? op(E) : T),
+    expect: error => {
+      if (isErr) throw error;
       return T;
     },
-    expectErr: (err) => {
-      if (isOk) throw err;
+    expectErr: error => {
+      if (isOk) throw error;
       return E;
     },
     map(f) {
@@ -49,16 +55,26 @@ export function resulti(T, E) {
     orElse(op) {
       return isErr ? op(E) : T;
     },
-    rslti: Resulti
+    rslti: Resulti,
   });
 }
 
 const i = x => x;
 
-export const resultify = (promise, ok = i, err = i) => {
-  return promise.then(x => resulti(x).map(ok)).catch(x => resulti(undefined, x).mapErr(err));
+export const resultify = (promise, okMap = i, errMap = i) => {
+  return promise
+    .then(x => resulti(x).map(okMap))
+    .catch(x => resulti(undefined, x).mapErr(errMap));
 };
 
-export function isResulti(res) {
+export function isResulti(res = {}) {
   return res.rslti === Resulti;
+}
+
+export function ok(val) {
+  return resulti(val);
+}
+
+export function err(val) {
+  return resulti(undefined, val);
 }
